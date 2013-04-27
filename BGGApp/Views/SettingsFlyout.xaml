@@ -1,0 +1,169 @@
+﻿<common:LayoutAwarePage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ApplicationSettings"
+    xmlns:common="using:BGGApp.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModel="using:AppBieding.ViewModel"
+    x:Class="ApplicationSettings.SettingsFlyout"
+    mc:Ignorable="d"
+    d:DesignHeight="768"
+    d:DesignWidth="646" Margin="0" Width="347">
+    
+    <common:LayoutAwarePage.Resources>
+        <Style x:Key="SettingsBackButtonStyle" TargetType="Button">
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="26.66667"/>
+            <Setter Property="AutomationProperties.AutomationId" Value="BackButton"/>
+            <Setter Property="AutomationProperties.Name" Value="Back"/>
+            <Setter Property="AutomationProperties.ItemType" Value="Navigation Button"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid" Width="30" Height="30">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BackgroundGlyph" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource BackButtonPointerOverBackgroundThemeBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BackgroundGlyph" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="White"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation
+                                            Storyboard.TargetName="ArrowGlyph"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1"
+                                            Duration="0"/>
+                                            <DoubleAnimation
+                                            Storyboard.TargetName="NormalGlyph"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0"
+                                            Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                            Storyboard.TargetName="FocusVisualWhite"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1"
+                                            Duration="0"/>
+                                            <DoubleAnimation
+                                            Storyboard.TargetName="FocusVisualBlack"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1"
+                                            Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unfocused" />
+                                    <VisualState x:Name="PointerFocused" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid Margin="-6,-6,0,0">
+                                <TextBlock x:Name="BackgroundGlyph" Text="&#xE0D4;" Foreground="Transparent"/>
+                                <TextBlock x:Name="NormalGlyph" Text="{StaticResource BackButtonSnappedGlyph}" Foreground="White"/>
+                                <TextBlock x:Name="ArrowGlyph" Text="&#xE0C4;" Foreground="#00b2f0" Opacity="0"/>
+                            </Grid>
+                            <Rectangle
+                                x:Name="FocusVisualWhite"
+                                IsHitTestVisible="False"
+                                Stroke="{StaticResource FocusVisualWhiteStrokeThemeBrush}" 
+                                StrokeEndLineCap="Square"
+                                StrokeDashArray="1,1"
+                                Opacity="0"
+                                StrokeDashOffset="1.5"
+                                />
+
+                            <Rectangle
+                                x:Name="FocusVisualBlack"
+                                IsHitTestVisible="False"
+                                Stroke="{StaticResource FocusVisualBlackStrokeThemeBrush}" 
+                                StrokeEndLineCap="Square"
+                                StrokeDashArray="1,1"
+                                Opacity="0"
+                                StrokeDashOffset="0.5"
+                                />
+
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </common:LayoutAwarePage.Resources>
+
+	<common:LayoutAwarePage.DataContext>
+		<Binding Mode="OneWay" Path="Settings" Source="{StaticResource Locator}"/>
+	</common:LayoutAwarePage.DataContext>
+
+    <Border BorderBrush="#00b2f0" BorderThickness="1,0,0,0">
+        <Grid Background="White" VerticalAlignment="Stretch">
+           
+            <!-- Root grid definition -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Header area for panel -->
+            <Grid Background="#00b2f0" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="20,32,17,13">
+                    <Button Click="MySettingsBackClicked" Margin="5,4,0,1"  Style="{StaticResource SettingsBackButtonStyle}" RenderTransformOrigin="0.933,0.467"/>
+                    <TextBlock Margin="10,0,0,0" FontFamily="Segoe UI" FontWeight="SemiLight" FontSize="24.6667" Text="BGG Account" Foreground="White"/>
+                    <Image Source="Assets/smalltile-sdk.png" Margin="400,0,6,0"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Settings Panel Content -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Background="#FF00B2F0">
+                <StackPanel x:Name="FlyoutContent" Margin="20,33,20,39" Grid.RowSpan="3" VerticalAlignment="Top" >
+
+            		<StackPanel x:Name="RegisterPanel">
+            			<TextBlock Text="It is not necessary to fill out your BGG password. The password is only necessary if you want to use this app to log your plays or modify information about your collection (like adding games)" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left" Foreground="White" Width="260" Visibility="Collapsed"/>
+            			<TextBlock Margin="0,25, 0, 0" Text="BGG Username" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left" Foreground="White"/>
+            			<TextBox HorizontalAlignment="Left" Width="280" Margin="0,5,0,0" Text="{Binding Username, Mode=TwoWay}"/>
+            			<TextBlock Margin="0,15,0,0" Text="BGG Password" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left" Foreground="White"/>
+            			<PasswordBox Margin="0,5,0,0" Password="{Binding Password, Mode=TwoWay}" Width="280" HorizontalAlignment="Left"/>
+            			<Button Content="Save" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,5,22,0" Command="{Binding RegisterCommand, Mode=OneWay}"/>
+            			<TextBlock TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left" Foreground="White" Width="303" Margin="0,20,0,0" FontSize="13.333">
+            				<Run Text="Your password is only necessary if you want to log plays. If you do not use this app for play logging, you can leave your password empty."/>
+            				<LineBreak/>
+            				<Run/>
+            				<LineBreak/>
+            				<Run Text="Thank you for using this version, if you have any comments and / or bug reports, please send a geekmail to user 'webkoala'  or regular email to 'bggapp@crescentius.nl'"/>
+            			</TextBlock>
+            		</StackPanel>
+
+            		<StackPanel x:Name="StatusPanel">
+            			<TextBlock TextWrapping="Wrap" Text="{Binding StatusMessage}" FontSize="16" FontWeight="Bold" Margin="0,5,100,0" Width="560"/>
+            			<ProgressRing HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" IsActive="{Binding IsWorking}" Height="32" Margin="0" Width="32"/>
+            		</StackPanel> 
+            	</StackPanel>
+            </ScrollViewer>
+        </Grid>
+            
+    </Border>
+</common:LayoutAwarePage>

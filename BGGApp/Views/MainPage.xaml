@@ -1,0 +1,78 @@
+﻿<common:LayoutAwarePage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BGGApp"
+	xmlns:common="using:BGGApp.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Converters="using:BGGApp.Common.Converters"
+    x:Class="BGGApp.MainPage"
+    mc:Ignorable="d">
+    <common:LayoutAwarePage.Resources>
+    	<common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    	<common:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+		<DataTemplate x:Key="MainBoardGame">
+			<Grid Width="222" Height="284">
+				<Image HorizontalAlignment="Left" Height="200" Margin="10,10,0,0" VerticalAlignment="Top" Width="200" Source="{Binding Thumbnail}"/>
+				<TextBlock HorizontalAlignment="Left" Margin="10,227,0,0" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" FontSize="14.667"/>
+			</Grid>
+		</DataTemplate>
+
+    	<Converters:StringFormatConverter x:Key="StringFormatConverter"/>
+
+    	<common:BooleanToInvertedVisibilityConverter x:Key="BooleanToInvertedVisibilityConverter"/>
+
+        </common:LayoutAwarePage.Resources>
+    <common:LayoutAwarePage.DataContext>
+    	<Binding Source="{StaticResource Locator}"/>
+    </common:LayoutAwarePage.DataContext>
+    <common:LayoutAwarePage.Background>
+		<ImageBrush/>
+    </common:LayoutAwarePage.Background>
+
+	<common:LayoutAwarePage.BottomAppBar>
+		<AppBar>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Orientation="Horizontal">
+					<StackPanel Margin="25,0,0,0" Orientation="Horizontal">
+					
+						<Button Style="{StaticResource RefreshAppBarButtonStyle}" Command="{Binding ReloadDataCommand, Mode=OneWay}" IsEnabled="{Binding CanRefresh}" 
+                        />
+						
+					</StackPanel>
+				</StackPanel>
+				<StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal"/>
+			</Grid>
+		</AppBar>
+	</common:LayoutAwarePage.BottomAppBar>
+
+	<Grid Background="White">
+
+	
+		<ScrollViewer HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" Margin="0,140,0,0" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+			<StackPanel Margin="0"  Orientation="Horizontal" Height="Auto" Width="Auto">
+				<local:HubHotness x:Name="HubHotness" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+				<local:HubPlays x:Name="lastPlaysControl" HorizontalAlignment="Left" Margin="0,0,0,55" ScrollViewer.VerticalScrollBarVisibility="Disabled" Visibility="{Binding Collection.IsUsernameFilled, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" /> 
+				<local:HubCollection x:Name="collectionControl" HorizontalAlignment="Left"  VerticalAlignment="Top" MinWidth="1200" />
+			</StackPanel>
+		</ScrollViewer>
+		<Grid x:Name="Header" Background="{StaticResource BGGHeaderBlue}" Margin="0,0,0,628" Height="100" VerticalAlignment="Top">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+        	
+			<TextBlock x:Name="pageTitle1" Style="{StaticResource PageHeaderTextStyle}" Foreground="White" HorizontalAlignment="Left" Grid.Column="1" Text="BoardGameGeek" Margin="120,0,0,0" VerticalAlignment="Center"/>
+			<Grid x:Name="UserInfo" HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Top" Width="Auto" Margin="0,18,18,18" DataContext="{Binding Settings.CurrentUser, Mode=OneWay, Source={StaticResource Locator}}" Grid.Column="1">
+				<TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource PageSubheaderTextStyle}" FontSize="18.667" Margin="0,-15,72,0" Foreground="White" Text="{Binding Username}"/>
+				<Image Height="64" Width="64" Source="{Binding Avatar}" HorizontalAlignment="Right"/>
+			</Grid>
+		</Grid>
+
+    	
+	</Grid>
+    </common:LayoutAwarePage>

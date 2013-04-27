@@ -1,0 +1,16 @@
+﻿
++ Main page
+-> Fix scrolling  (the plays' list insists on scrolling vertically, fixed this now by adding 6 items max to user plays)
+-> Fix No Account
+-> Fix Hotness info (requires separate load to API service to get hotness info)
+-> Fix Click on Hotness items
+-> Implement color scheme based on rating 
+
++ Collection page
+-> Change filter to suggested (by Tom) popup 
+-> Add watermark to search.
+-> What's the idea with slide 11? It is very beautiful, but it shows to few games (imho) maybe I could implement it as a different view later on.
+
++ ALL
+-> Check geekmails / notifications (not sure if possible without scraping)
+-> 

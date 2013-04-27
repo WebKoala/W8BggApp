@@ -1,0 +1,328 @@
+﻿<common:LayoutAwarePage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BGGApp.Views"
+    xmlns:common="using:BGGApp.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Controls="using:BGGApp.Controls"
+    xmlns:Converters="using:BGGApp.Common.Converters"
+    x:Name="pageRoot"
+    x:Class="BGGApp.Views.BoardGame"
+    mc:Ignorable="d" Background="Black"
+    >
+
+	<common:LayoutAwarePage.DataContext>
+		<Binding Mode="OneWay" Path="BoardGame" Source="{StaticResource Locator}"/>
+	</common:LayoutAwarePage.DataContext>
+    
+	<common:LayoutAwarePage.Resources>
+
+		<Converters:RatingColorConverter x:Key="RatingColorConverter"/>
+
+    	<Converters:StringFormatConverter x:Key="StringFormatConverter"/>
+    	<common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <DataTemplate x:Key="CommentTemplate">
+        	<StackPanel HorizontalAlignment="Left">
+        		<Border Margin="0" Background="{StaticResource LightBackground}" BorderBrush="{StaticResource LightBackgroundBorder}" BorderThickness="0,1">
+        			<StackPanel Orientation="Horizontal" Height="20" Width="315">
+        				<TextBlock TextWrapping="Wrap" Text="User" Width="87" Style="{StaticResource ItemTextStyle}" Foreground="{StaticResource BGGTextGrey}" FontSize="12" >
+        					<TextBlock.RenderTransform>
+        						<CompositeTransform/>
+        					</TextBlock.RenderTransform>
+        				</TextBlock>
+        				<TextBlock TextWrapping="Wrap" Text="{Binding Username}" Style="{StaticResource ItemTextStyle}" Foreground="#DE000000" FontSize="12">
+        					<TextBlock.RenderTransform>
+        						<CompositeTransform/>
+        					</TextBlock.RenderTransform>
+        				</TextBlock>
+        			</StackPanel>
+        		</Border>
+        		<Border Background="{StaticResource LightBackground}" BorderBrush="{StaticResource LightBackgroundBorder}" BorderThickness="0,1">
+        			<StackPanel Orientation="Horizontal" Height="20" Width="315">
+        				<TextBlock TextWrapping="Wrap" Text="Rating" Width="87" Style="{StaticResource ItemTextStyle}" Foreground="{StaticResource BGGTextGrey}" FontSize="12" >
+        					<TextBlock.RenderTransform>
+        						<CompositeTransform/>
+        					</TextBlock.RenderTransform>
+        				</TextBlock>
+        				<TextBlock TextWrapping="Wrap" Text="{Binding RatingDisplay, Mode=OneWay}" Style="{StaticResource ItemTextStyle}" Foreground="#DE000000" FontSize="12">
+        					<TextBlock.RenderTransform>
+        						<CompositeTransform/>
+        					</TextBlock.RenderTransform>
+        				</TextBlock>
+        			</StackPanel>
+        		</Border>
+        		<TextBlock TextWrapping="Wrap" Text="{Binding Text}" Margin="5,10,0,5" Style="{StaticResource ItemTextStyle}" HorizontalAlignment="Left" Foreground="#DE000000" FontSize="12">
+        			<TextBlock.RenderTransform>
+        				<CompositeTransform/>
+        			</TextBlock.RenderTransform>
+        		</TextBlock>
+        		<Rectangle Fill="#FFF4F4F5" Height="1" Stroke="White" Margin="5" MinWidth="310" HorizontalAlignment="Left"/>
+        	</StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="PlayerPollTemplate">
+        	<StackPanel Orientation="Horizontal">
+        		<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding NumPlayersDisplay, Mode=OneWay}" VerticalAlignment="Top" Width="15" FontFamily="Segoe UI" Foreground="Black"/>
+        		<StackPanel x:Name="Bars" Height="12" Width="190" Orientation="Horizontal">
+        			<Controls:StatsBar VerticalAlignment="Top" Margin="0" Background="#FF64E600" Foreground="White" Percentage="{Binding BestPercentage, Mode=OneWay}" TotalWidth="{Binding Width, ElementName=Bars}"/>
+        			<Controls:StatsBar VerticalAlignment="Top" Background="#FF26619C" Margin="0" Foreground="White" Percentage="{Binding RecommendedPercentage, Mode=OneWay}" TotalWidth="{Binding Width, ElementName=Bars}"/>
+        			<Controls:StatsBar VerticalAlignment="Top" Background="#FFF2F2F2" Margin="0,0,42,0" Foreground="White" Percentage="{Binding NotRecommendedPercentage, Mode=OneWay}" TotalWidth="{Binding Width, ElementName=Bars}"/>
+        		</StackPanel>
+        		<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Total, Mode=OneWay}" VerticalAlignment="Top" Width="20" Margin="5,0,0,0" TextAlignment="Right" FontFamily="Segoe UI" Foreground="Black"/>
+        	</StackPanel>
+        </DataTemplate>
+        <SolidColorBrush x:Key="DarkerGreyBorder" Color="#FFCDCDCD"/>
+        
+    </common:LayoutAwarePage.Resources>
+	
+
+	<common:LayoutAwarePage.BottomAppBar>
+		<AppBar>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Orientation="Horizontal">
+					<StackPanel Margin="25,0,0,0" Orientation="Horizontal">
+					<Button Style="{StaticResource WorldAppBarButtonStyle}" Command="{Binding GotoSiteCommand, Mode=OneWay}" 
+                        />
+						<Button Style="{StaticResource RefreshAppBarButtonStyle}" Command="{Binding ForceReloadCommand, Mode=OneWay}" 
+                        />
+						<Button Style="{StaticResource LogPlayAppBarButtonStyle}" Command="{Binding ShowPlayCommand, Mode=OneWay}" IsEnabled="{Binding CanChangeStatus, Mode=OneWay}" 
+                        />
+					</StackPanel>
+				</StackPanel>
+				<StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal"/>
+			</Grid>
+		</AppBar>
+	</common:LayoutAwarePage.BottomAppBar>
+
+    <!--
+        This grid acts as a root panel for the page that defines two rows:
+        * Row 0 contains the back button and page title
+        * Row 1 contains the rest of the page layout
+    -->
+    <!--
+        This grid acts as a root panel for the page that defines two rows:
+        * Row 0 contains the back button and page title
+        * Row 1 contains the rest of the page layout
+    -->
+    <Grid Style="{StaticResource LayoutRootStyle}" DataContext="{Binding CurrentGame}" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <VisualStateManager.VisualStateGroups>
+
+            <!-- Visual states reflect the application's view state -->
+            <VisualStateGroup x:Name="ApplicationViewStates">
+                <VisualState x:Name="FullScreenLandscape"/>
+                <VisualState x:Name="Filled"/>
+
+                <!-- The entire page respects the narrower 100-pixel margin convention for portrait -->
+                <VisualState x:Name="FullScreenPortrait"/>
+
+                <!-- The back button and title have different styles when snapped -->
+                <VisualState x:Name="Snapped">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pageTitle" Storyboard.TargetProperty="Style">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnappedPageHeaderTextStyle}"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!-- Back button and page title -->
+        <Grid x:Name="Header" Background="{StaticResource BGGHeaderBlue}" Margin="0" Height="100" VerticalAlignment="Top">
+        	<Grid.ColumnDefinitions>
+        		<ColumnDefinition Width="Auto"/>
+        		<ColumnDefinition Width="*"/>
+        	</Grid.ColumnDefinitions>
+        	
+        	<Button x:Name="backButton1" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}" Margin="40,0,0,-4" VerticalAlignment="Center">
+        		<Button.Foreground>
+        			<SolidColorBrush Color="{StaticResource BGGPurple}"/>
+        		</Button.Foreground>
+        	</Button>
+        	<Grid x:Name="UserInfo1" HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Top" Width="Auto" Margin="0,18,18,18" DataContext="{Binding Settings.CurrentUser, Mode=OneWay, Source={StaticResource Locator}}" Grid.Column="1">
+        		<TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource PageSubheaderTextStyle}" FontSize="18.667" Margin="0,-15,72,0" Foreground="White" Text="{Binding Username}"/>
+        		<Image Height="64" Width="64" Source="{Binding Avatar}" HorizontalAlignment="Right"/>
+        	</Grid>
+        	<StackPanel Height="100" VerticalAlignment="Center" Orientation="Horizontal" Margin="120,0,320,0">
+        		<TextBlock x:Name="pageTitle" Text="{Binding Name}" Style="{StaticResource PageHeaderTextStyle}" Foreground="White" FontSize="26.667" VerticalAlignment="Center" Margin="0" FontWeight="Normal"/>
+        		<TextBlock x:Name="pageTitle_year" Text="{Binding YearPublished, ConverterParameter=(\{0\}), Converter={StaticResource StringFormatConverter}}" Style="{StaticResource PageHeaderTextStyle}" Foreground="White" FontSize="26.667" VerticalAlignment="Center" Margin="15,0,0,0" FontWeight="Normal"/>
+        	</StackPanel>
+        </Grid>
+
+        <ProgressRing HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Height="32" RenderTransformOrigin="1.625,0.312" Width="32" DataContext="{Binding Source={StaticResource Locator}}" IsActive="{Binding BoardGame.IsLoading}" Foreground="White" Grid.Row="0"/>
+        <ScrollViewer x:Name="Body" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" Margin="0" Grid.Row="1" HorizontalScrollBarVisibility="Auto">
+        	<StackPanel Orientation="Horizontal" Margin="0,0,0,40">
+        		<StackPanel x:Name="RatingImage" Orientation="Vertical" Margin="120,40,0,0">
+        			<StackPanel x:Name="RatingsPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal">
+        				<Border Height="90" Width="90" HorizontalAlignment="Left" BorderThickness="1" BorderBrush="{StaticResource DarkerGreyBorder}" >
+        					<Grid Background="{StaticResource BGGGrey}">
+        						<TextBlock HorizontalAlignment="Left" Margin="10,5,0,0" TextWrapping="Wrap" Text="BGG ranking" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Foreground="{StaticResource BGGTextGrey}" Width="69"/>
+        						<TextBlock HorizontalAlignment="Left" Margin="9,54,-6,4" TextWrapping="Wrap" Text="{Binding RankDisplay, Mode=OneWay}" FontSize="26.667" Style="{StaticResource BodyTextStyle}" Foreground="Black" Width="85" FontWeight="Bold"/>
+        					</Grid>
+        				</Border>
+        				<Border Height="90" Width="90" HorizontalAlignment="Left" Margin="5,0,0,0" BorderThickness="1" BorderBrush="{StaticResource DarkerGreyBorder}">
+        					<Grid Background="{StaticResource BGGGrey}">
+        						<TextBlock HorizontalAlignment="Left" Margin="10,5,-7,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Foreground="{StaticResource BGGTextGrey}" Width="85">
+        							<Run Text="average"/>
+        							<LineBreak/>
+        							<Run Text="rating"/>
+        						</TextBlock>
+        						<TextBlock HorizontalAlignment="Left" Margin="9,54,-6,4" TextWrapping="Wrap" Text="{Binding AverageRating, ConverterParameter=\{0:#0.00\}, Converter={StaticResource StringFormatConverter}}" FontSize="26.667" Style="{StaticResource BodyTextStyle}" Foreground="Black" Width="85" FontWeight="Bold"/>
+        		
+        					</Grid>
+        				</Border>
+        				<Border Height="90" Width="90" HorizontalAlignment="Left" Margin="5,0,0,0" BorderThickness="1" BorderBrush="#FF9AA493" >
+        					<Grid Background="#FFE2F0D9">
+        						<TextBlock HorizontalAlignment="Left" Margin="10,5,-7,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Foreground="{StaticResource BGGTextGrey}" Width="85" Text="your rating"/>
+        						<TextBlock HorizontalAlignment="Left" Margin="9,54,-6,4" TextWrapping="Wrap" Text="{Binding RatingDisplay}" FontSize="26.667" Style="{StaticResource BodyTextStyle}" Foreground="{Binding Rating, Converter={StaticResource RatingColorConverter}}" Width="85" FontWeight="Bold"/>
+        					</Grid>
+        				</Border>
+        			</StackPanel>
+        			<Image HorizontalAlignment="Left" Height="480" VerticalAlignment="Top" Width="280" Source="{Binding Image}" Margin="0,5,0,0"/>
+        		</StackPanel>
+        		<ScrollViewer x:Name="scrollOverview" HorizontalAlignment="Left" BorderThickness="0" Padding="0,0,0,10" VerticalScrollBarVisibility="Auto" Margin="40,40,0,0" Width="280">
+        			<StackPanel>
+        				<Border Margin="0" Background="{StaticResource LightBackground}" BorderBrush="{StaticResource LightBackgroundBorder}" BorderThickness="0,1">
+        					<StackPanel x:Name="stackDesigner" Orientation="Horizontal" Width="280">
+        						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Foreground="{StaticResource BGGTextGrey}" Width="150" Text="designer" Padding="2,0,0,0">
+        							<TextBlock.RenderTransform>
+        								<CompositeTransform/>
+        							</TextBlock.RenderTransform>
+        						</TextBlock>
+        						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap"  FontSize="14.667" Style="{StaticResource BodyTextStyle}" Text="{Binding DesignersDisplay, Mode=OneWay}" Foreground="Black">
+        							<TextBlock.RenderTransform>
+        								<CompositeTransform/>
+        							</TextBlock.RenderTransform>
+        						</TextBlock>
+        					</StackPanel>
+        				</Border>
+        				<StackPanel x:Name="stackArtist" Orientation="Horizontal" Margin="0">
+        					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Foreground="{StaticResource BGGTextGrey}" Width="150" Text="artist" Padding="2,0,0,0">
+        						<TextBlock.RenderTransform>
+        							<CompositeTransform/>
+        						</TextBlock.RenderTransform>
+        					</TextBlock>
+        					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap"  FontSize="14.667" Style="{StaticResource BodyTextStyle}" Text="{Binding ArtistsDisplay, Mode=OneWay}" Foreground="Black">
+        						<TextBlock.RenderTransform>
+        							<CompositeTransform/>
+        						</TextBlock.RenderTransform>
+        					</TextBlock>
+        				</StackPanel>
+        				<Border Margin="0" Background="{StaticResource LightBackground}" BorderBrush="{StaticResource LightBackgroundBorder}" BorderThickness="0,1">
+        					<StackPanel x:Name="stackPublisher" Orientation="Horizontal" Width="280">
+        						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Foreground="{StaticResource BGGTextGrey}" Width="150" Text="publisher" Padding="2,0,0,0">
+        							<TextBlock.RenderTransform>
+        								<CompositeTransform/>
+        							</TextBlock.RenderTransform>
+        						</TextBlock>
+        						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Text="{Binding PublishersDisplay, Mode=OneWay}" Foreground="Black">
+        							<TextBlock.RenderTransform>
+        								<CompositeTransform/>
+        							</TextBlock.RenderTransform>
+        						</TextBlock>
+        					</StackPanel>
+        				</Border>
+        				<StackPanel x:Name="stackNoPlayers" Orientation="Horizontal" Margin="0">
+        					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Foreground="{StaticResource BGGTextGrey}" Text="# of players" Width="150" Padding="2,0,0,0">
+        						<TextBlock.RenderTransform>
+        							<CompositeTransform/>
+        						</TextBlock.RenderTransform>
+        					</TextBlock>
+        					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Text="{Binding MinPlayers}" Foreground="Black">
+        						<TextBlock.RenderTransform>
+        							<CompositeTransform/>
+        						</TextBlock.RenderTransform>
+        					</TextBlock>
+        					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Text="-" Margin="5,0" Foreground="Black">
+        						<TextBlock.RenderTransform>
+        							<CompositeTransform/>
+        						</TextBlock.RenderTransform>
+        					</TextBlock>
+        					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Text="{Binding MaxPlayers}" Foreground="Black">
+        						<TextBlock.RenderTransform>
+        							<CompositeTransform/>
+        						</TextBlock.RenderTransform>
+        					</TextBlock>
+        				</StackPanel>
+        				<Border Margin="0" BorderThickness="0,1" Background="{StaticResource LightBackground}" BorderBrush="{StaticResource LightBackgroundBorder}">
+        					<StackPanel x:Name="stackPlayingTime" Orientation="Horizontal" Height="20" Width="280">
+        						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Foreground="{StaticResource BGGTextGrey}" Width="150" Text="duration" Padding="2,0,0,0">
+        							<TextBlock.RenderTransform>
+        								<CompositeTransform/>
+        							</TextBlock.RenderTransform>
+        						</TextBlock>
+        						<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Text="{Binding PlayingTime, ConverterParameter=\{0\} minutes, Converter={StaticResource StringFormatConverter}}" Foreground="Black">
+        							<TextBlock.RenderTransform>
+        								<CompositeTransform/>
+        							</TextBlock.RenderTransform>
+        						</TextBlock>
+        					</StackPanel>
+        				</Border>
+        				<StackPanel x:Name="stackYourPlays" Orientation="Horizontal" Margin="0" >
+        					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Foreground="{StaticResource BGGTextGrey}" Width="150" Text="your plays" Padding="2,0,0,0">
+        						<TextBlock.RenderTransform>
+        							<CompositeTransform/>
+        						</TextBlock.RenderTransform>
+        					</TextBlock>
+        					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14.667" Style="{StaticResource BodyTextStyle}" Text="{Binding NumPlays}" Foreground="Black" Height="Auto">
+        						<TextBlock.RenderTransform>
+        							<CompositeTransform TranslateX="0" TranslateY="0"/>
+        						</TextBlock.RenderTransform>
+        					</TextBlock>
+        				</StackPanel>
+        				<ItemsControl  ItemsSource="{Binding PlayerPollResults}" Margin="0,30,10,5" ItemTemplate="{StaticResource PlayerPollTemplate}"  />
+        				<TextBlock TextWrapping="Wrap" Text="{Binding UserComment, ConverterParameter=“\{0\}”, Converter={StaticResource StringFormatConverter}}" FontSize="14.667" FontFamily="Segoe UI" FontStyle="Italic" Margin="0,20,0,0"/>
+        			</StackPanel>
+        		</ScrollViewer>
+        		<ScrollViewer x:Name="scrollDescription" HorizontalAlignment="Left" Width="300" BorderThickness="0" Padding="0,0,0,10" VerticalScrollBarVisibility="Auto" Margin="40,40,0,0">
+        			<StackPanel Margin="0" Width="280" HorizontalAlignment="Left">
+        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="26.667" Style="{StaticResource BodyTextStyle}" Text="description" Foreground="Black"/>
+        				<TextBlock TextWrapping="Wrap" Text="{Binding Description}" Style="{StaticResource BasicTextStyle}" Margin="0,30,0,0" FontSize="12" Foreground="#DE000000"/>
+        			</StackPanel>
+        		</ScrollViewer>
+        		<Grid x:Name="Comments" Margin="20,40,0,0" Width="280">
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="26.667" Style="{StaticResource BodyTextStyle}" Text="comments" Foreground="Black" Margin="0"/>
+        			<ListView ItemsSource="{Binding Comments}" ItemTemplate="{StaticResource CommentTemplate}" SelectionMode="None" HorizontalAlignment="Left" Margin="0,50,0,0"/>
+        		</Grid>
+        	</StackPanel>
+        </ScrollViewer>
+        <Popup Width="400" DataContext="{Binding BoardGame, Mode=OneWay, Source={StaticResource Locator}}" IsOpen="{Binding ShowPlayDialog}" Margin="40,0,0,88" Grid.RowSpan="1" Grid.Row="1" Height="400" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        	<Border BorderBrush="Black" BorderThickness="1" Height="400" VerticalAlignment="Bottom" Width="400">
+        		<StackPanel Orientation="Vertical" Margin="0" Background="White" Width="398">
+        			<TextBlock TextWrapping="Wrap" Text="Log play" Foreground="Black" Margin="10,10,0,0" Style="{StaticResource GroupHeaderTextStyle}"/>
+        			<StackPanel Height="32" Orientation="Horizontal" Margin="10,10,10,0">
+        				<TextBlock TextWrapping="Wrap" Text="When" Foreground="Black" Style="{StaticResource BasicTextStyle}" VerticalAlignment="Center" Margin="0,0,0,4" Width="90"/>
+        				<Controls:SmartDateTextbox x:Name="smartDateTextbox" TextWrapping="Wrap"  Width="104" VerticalAlignment="Center" Background="White" BorderBrush="#FF131313" Margin="10,0,0,0" Date="{Binding CurrentPlay.PlayDate, Mode=TwoWay}"/>
+        				<TextBlock TextWrapping="Wrap" Text="{Binding DayOfWeek, ElementName=smartDateTextbox}" Foreground="Black" Style="{StaticResource BasicTextStyle}" VerticalAlignment="Center" Width="90" Margin="15,0,0,0"/>
+        			</StackPanel>
+        			<StackPanel Height="32" Orientation="Horizontal" Margin="10,10,10,0">
+        				<TextBlock TextWrapping="Wrap" Text="# Plays" Foreground="Black" Style="{StaticResource BasicTextStyle}" VerticalAlignment="Center" Margin="0,0,0,4" Width="90"/>
+        				<TextBox TextWrapping="Wrap" Width="104" VerticalAlignment="Center" Background="White" BorderBrush="#FF131313" Margin="10,0,0,0" Text="{Binding CurrentPlay.NumPlays, Mode=TwoWay}" InputScope="Number"/>
+        			</StackPanel>
+        			<StackPanel Height="129" Orientation="Horizontal" Margin="10,10,10,0">
+        				<TextBlock TextWrapping="Wrap" Text="Comments" Foreground="Black" Style="{StaticResource BasicTextStyle}" VerticalAlignment="Top" Margin="0,5,0,4" Width="90"/>
+        				<TextBox TextWrapping="Wrap" Width="279" VerticalAlignment="Top" Background="White" BorderBrush="#FF131313" Margin="10,5,0,0" AcceptsReturn="True" Height="124" Text="{Binding CurrentPlay.Comments, Mode=TwoWay}"/>
+        			</StackPanel>
+        			<StackPanel Margin="202,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" Width="186">
+        				<ProgressRing HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="40" Height="40" Foreground="Black" Margin="0,15,0,5" IsActive="{Binding StatusUpdating}"/>
+        				<Button Style="{StaticResource SaveAppBarButtonWiteBGStyle}" Command="{Binding LogPlayCommand, Mode=OneWay}" BorderThickness="2,2,2,0" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Top" Width="70" Padding="0,4,12,4" IsEnabled="{Binding DateIsValid, ElementName=smartDateTextbox}" 
+                        />
+        				<Button Style="{StaticResource NoAppBarButtonWiteBGStyle}" Command="{Binding HidePlayCommand, Mode=OneWay}"  BorderThickness="2,2,2,0" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Top" Width="70" 
+                        />
+        			</StackPanel>
+        			<TextBlock TextWrapping="Wrap" Text="{Binding StatusMessage}" Foreground="Red" Style="{StaticResource BasicTextStyle}" VerticalAlignment="Top" Margin="20,5,19,4"/>
+        		</StackPanel>
+        	</Border>
+        </Popup>
+
+    </Grid>
+</common:LayoutAwarePage>

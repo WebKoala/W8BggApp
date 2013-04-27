@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="23486Crescentius.BGGCompanion" Publisher="CN=752E0EB7-CB0A-4F45-8E45-8408C30E5219" Version="1.0.0.12" />
+  <Properties>
+    <DisplayName>BGG Companion</DisplayName>
+    <PublisherDisplayName>Crescentius</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.1</OSMinVersion>
+    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="BGGApp.App">
+      <VisualElements DisplayName="BGG Companion" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="BoardGameGeek App for W8.  View and filter your collection, view last plays and view comments about games. Beta version. Much more coming soon!" ForegroundText="light" BackgroundColor="#4E51C2" ToastCapable="false">
+        <DefaultTile ShowName="logoOnly" ShortName="BGG Companion" />
+        <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#FFFFFF" />
+        <InitialRotationPreference>
+          <Rotation Preference="landscape" />
+        </InitialRotationPreference>
+      </VisualElements>
+      <Extensions>
+        <Extension Category="windows.search" />
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

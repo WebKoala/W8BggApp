@@ -1,0 +1,48 @@
+﻿<UserControl
+    x:Class="BGGApp.HubPlays"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BGGApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400" Width="360" DataContext="{Binding Collection, Mode=OneWay, Source={StaticResource Locator}}" Height="Auto">
+	<UserControl.Resources>
+		
+		
+		
+	</UserControl.Resources>
+    
+    <StackPanel Width="360">
+
+		<HyperlinkButton HorizontalAlignment="Left" VerticalAlignment="Top" Click="GotoMainPageClicked" BorderThickness="0" Width="271" HorizontalContentAlignment="Left" Padding="0,4,12,5">
+			<StackPanel HorizontalAlignment="Left" Height="40" Orientation="Horizontal" VerticalAlignment="Top" >
+
+				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="recent plays" VerticalAlignment="Top" FontSize="26.667" Margin="0,-10,0,0" Style="{StaticResource HeaderTextStyle}" FontWeight="Normal" Foreground="{StaticResource BGGHeaderBlue}" Width="144" Height="40" FontFamily="Segoe UI Symbol" LineStackingStrategy="MaxHeight" TextTrimming="None"/>
+				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="&#xE00F;" VerticalAlignment="Top" Width="22" FontSize="26.667" Style="{StaticResource HeaderTextStyle}" FontWeight="ExtraBold" Foreground="{StaticResource BGGHeaderBlue}" Margin="10,-14,0,0" FontFamily="Segoe UI Symbol"/>
+
+			</StackPanel>
+		</HyperlinkButton>
+
+		<ListView x:Name="PlaysListView" ItemsSource="{Binding UserPlaysHub}"  
+			ItemTemplate="{StaticResource FrontpagePlayItem}" HorizontalContentAlignment="Left" 
+			ItemClick="ItemView_ItemClick" SelectionMode="None" IsItemClickEnabled="True" IsSwipeEnabled="False" 
+			ScrollViewer.VerticalScrollBarVisibility="Disabled"
+			ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+			ScrollViewer.VerticalScrollMode="Disabled"
+			ScrollViewer.HorizontalScrollMode="Disabled"
+			ScrollViewer.ZoomMode="Disabled" VerticalAlignment="Top" VerticalContentAlignment="Top"
+				 
+				  >
+		
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="Padding" Value="0"/>
+					<Setter Property="Margin" Value="0"/>
+				</Style>
+			</ListView.ItemContainerStyle>
+		</ListView>
+
+	</StackPanel>
+</UserControl>

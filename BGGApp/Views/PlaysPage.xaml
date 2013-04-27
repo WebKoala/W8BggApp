@@ -1,0 +1,113 @@
+﻿<common:LayoutAwarePage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:BGGApp.Views" xmlns:common="using:BGGApp.Common" xmlns:Controls="using:BGGApp.Controls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Converters="using:BGGApp.Common.Converters"
+    x:Name="pageRoot"
+    x:Class="BGGApp.Views.PlaysPage"
+    mc:Ignorable="d">
+
+    <common:LayoutAwarePage.Resources>
+
+    	<common:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+
+    	<common:BooleanToInvertedVisibilityConverter x:Key="BooleanToInvertedVisibilityConverter"/>
+
+    	<common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+		
+        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
+    	<x:String x:Key="AppName">My Application</x:String>
+
+    	<Converters:StringFormatConverter x:Key="StringFormatConverter"/>
+        
+    </common:LayoutAwarePage.Resources>
+
+	<common:LayoutAwarePage.DataContext>
+		<Binding Mode="OneWay" Path="Collection" Source="{StaticResource Locator}"/>
+	</common:LayoutAwarePage.DataContext>
+
+
+	<common:LayoutAwarePage.BottomAppBar>
+		<AppBar>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Orientation="Horizontal">
+					<StackPanel Margin="25,0,0,0" Orientation="Horizontal">
+					
+						<Button Style="{StaticResource RefreshAppBarButtonStyle}" Command="{Binding ReloadCollectionCommand, Mode=OneWay}" IsEnabled="{Binding CanRefresh}" 
+                        />
+						
+					</StackPanel>
+				</StackPanel>
+				<StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal"/>
+			</Grid>
+		</AppBar>
+	</common:LayoutAwarePage.BottomAppBar>
+
+
+    <!--
+        This grid acts as a root panel for the page that defines two rows:
+        * Row 0 contains the back button and page title
+        * Row 1 contains the rest of the page layout
+    -->
+    <Grid Style="{StaticResource LayoutRootStyle}" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+		
+        <VisualStateManager.VisualStateGroups>
+
+            <!-- Visual states reflect the application's view state -->
+            <VisualStateGroup x:Name="ApplicationViewStates">
+                <VisualState x:Name="FullScreenLandscape"/>
+                <VisualState x:Name="Filled"/>
+
+                <!-- The entire page respects the narrower 100-pixel margin convention for portrait -->
+                <VisualState x:Name="FullScreenPortrait"/>
+
+                <!-- The back button and title have different styles when snapped -->
+                <VisualState x:Name="Snapped"/>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!-- Back button and page title -->
+    	<Grid x:Name="Header" Background="{StaticResource BGGHeaderBlue}" Margin="0" Height="100" VerticalAlignment="Top">
+    		<Grid.ColumnDefinitions>
+    			<ColumnDefinition Width="Auto"/>
+    			<ColumnDefinition Width="*"/>
+    		</Grid.ColumnDefinitions>
+        	
+    		<Button x:Name="backButton1" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}" Margin="36,0,0,-4" VerticalAlignment="Center">
+    			<Button.Foreground>
+    				<SolidColorBrush Color="{StaticResource BGGPurple}"/>
+    			</Button.Foreground>
+    		</Button>
+        	
+    		<TextBlock x:Name="pageTitle2" Style="{StaticResource PageHeaderTextStyle}" Foreground="White" HorizontalAlignment="Left" Grid.Column="1" Text="your plays" Margin="120,24,0,36" VerticalAlignment="Center" FontSize="26.667"/>
+    		<Grid x:Name="UserInfo1" HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Top" Width="Auto" Margin="0,18,18,18" DataContext="{Binding Settings.CurrentUser, Mode=OneWay, Source={StaticResource Locator}}" Grid.Column="1">
+    			<TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource PageSubheaderTextStyle}" FontSize="18.667" Margin="0,-15,72,0" Foreground="White" Text="{Binding Username}"/>
+    			<Image Height="64" Width="64" Source="{Binding Avatar}" HorizontalAlignment="Right"/>
+    		</Grid>
+    	</Grid>
+        
+		
+    	<ListView Margin="40,0,0,0" Grid.Row="1"  Style="{StaticResource HorizontalScrollerListView}" ItemTemplate="{StaticResource FrontpagePlayItem}" ItemsSource="{Binding UserPlays}"
+    		ItemClick="ItemView_ItemClick" SelectionMode="None" IsItemClickEnabled="True" IsSwipeEnabled="False">
+    		<ListView.ItemsPanel>
+    			<ItemsPanelTemplate>
+    				<WrapGrid
+    					Orientation="Vertical" />
+    			</ItemsPanelTemplate>
+    		</ListView.ItemsPanel>
+    		<ListView.ItemContainerStyle>
+    			<Style TargetType="ListViewItem">
+    				<Setter Property="Padding" Value="0"/>
+    				<Setter Property="Margin" Value="0"/>
+    			</Style>
+    		</ListView.ItemContainerStyle>
+    	</ListView>
+        
+		
+    </Grid>
+</common:LayoutAwarePage>
