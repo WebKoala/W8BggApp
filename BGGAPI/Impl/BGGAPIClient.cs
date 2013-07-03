@@ -120,7 +120,7 @@ namespace BGGAPI
                                                            Name = Boardgame.Element("item").Attribute("name").Value,
                                                            NumPlays = int.Parse(Boardgame.Attribute("quantity").Value),
                                                            GameId = int.Parse(Boardgame.Element("item").Attribute("objectid").Value),
-                                                           PlayDate = DateTime.ParseExact(Boardgame.Attribute("date").Value,"yyyy-MM-dd",CultureInfo.InvariantCulture)
+                                                           PlayDate = safeParseDateTime(Boardgame.Attribute("date").Value)
                                                        };
                 return gameCollection;
 
@@ -159,7 +159,8 @@ namespace BGGAPI
                                                             Artists = (from p in Boardgame.Element("item").Elements("link") where p.Attribute("type").Value == "boardgameartist" select p.Attribute("value").Value).ToList(),
                                                             Comments = LoadComments(Boardgame.Element("item").Element("comments")),
                                                             PlayerPollResults = LoadPlayerPollResults(Boardgame.Element("item").Element("poll")),
-                                                            IsExpansion = SetIsExpansion(Boardgame)
+                                                            IsExpansion = SetIsExpansion(Boardgame),
+                                                            TotalComments = int.Parse(Boardgame.Element("item").Element("comments").Attribute("totalitems").Value)
 
                                                         };
 
@@ -216,6 +217,30 @@ namespace BGGAPI
             catch (Exception ex)
             {
                 return new BGGUser();
+            }
+        }
+
+        public async Task<IEnumerable<Comment>> LoadAllComments(int GameId, int totalComments)
+        {
+            try
+            {
+
+            List<Comment> comments = new List<Comment>();
+            int page = 1;
+            while ((page -1) * 100 < totalComments)
+            {
+                Uri teamDataURI = new Uri(string.Format(BASE_URL + "/thing?id={0}&stats=1&comments=1&page={1}", GameId,page));
+                XDocument xDoc = await ReadData(teamDataURI);
+                XElement commentsElement = xDoc.Element("items").Element("item").Element("comments");
+                var commentsRes = LoadComments(commentsElement);
+                comments.AddRange(commentsRes);
+                page++;
+            }
+            return comments;
+            }
+            catch(Exception)
+            {
+                return new List<Comment>();
             }
         }
 
@@ -438,16 +463,26 @@ namespace BGGAPI
             {
                 
             }
-
             return cookieJar;
             
+        }
+
+        private DateTime safeParseDateTime(string date)
+        {
+            DateTime dt;
+            if(!DateTime.TryParseExact(date,"yyyy-MM-dd",CultureInfo.InvariantCulture,DateTimeStyles.None,out dt))
+            {
+                dt = DateTime.MinValue;
+            }
+            return dt;
         }
 
 
 
 
 
-        
-        
+
+
+       
     }
 }

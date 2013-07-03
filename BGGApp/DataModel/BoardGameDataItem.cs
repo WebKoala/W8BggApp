@@ -270,6 +270,14 @@ namespace BGGApp.DataModel
             set { this.SetProperty(ref this._playingTime, value); }
         }
 
+        private int _totalComments = 0;
+        [DataMember()]
+        public int TotalComments
+        {
+            get { return this._totalComments; }
+            set { this.SetProperty(ref this._totalComments, value); }
+        }
+
         private int _rank = 0;
         [DataMember()]
         public int Rank

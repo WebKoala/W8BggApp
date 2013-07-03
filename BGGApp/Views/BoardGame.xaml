@@ -26,13 +26,13 @@
         <DataTemplate x:Key="CommentTemplate">
         	<StackPanel HorizontalAlignment="Left">
         		<Border Margin="0" Background="{StaticResource LightBackground}" BorderBrush="{StaticResource LightBackgroundBorder}" BorderThickness="0,1">
-        			<StackPanel Orientation="Horizontal" Height="20" Width="315">
-        				<TextBlock TextWrapping="Wrap" Text="User" Width="87" Style="{StaticResource ItemTextStyle}" Foreground="{StaticResource BGGTextGrey}" FontSize="12" >
+        			<StackPanel Orientation="Horizontal" Height="20">
+        				<TextBlock TextWrapping="Wrap" Text="User" Style="{StaticResource ItemTextStyle}" Foreground="{StaticResource BGGTextGrey}" FontSize="12" HorizontalAlignment="Left" >
         					<TextBlock.RenderTransform>
         						<CompositeTransform/>
         					</TextBlock.RenderTransform>
         				</TextBlock>
-        				<TextBlock TextWrapping="Wrap" Text="{Binding Username}" Style="{StaticResource ItemTextStyle}" Foreground="#DE000000" FontSize="12">
+        				<TextBlock TextWrapping="Wrap" Text="{Binding Username}" Style="{StaticResource ItemTextStyle}" Foreground="#DE000000" FontSize="12" HorizontalAlignment="Left" Margin="10,0,0,0">
         					<TextBlock.RenderTransform>
         						<CompositeTransform/>
         					</TextBlock.RenderTransform>
@@ -40,13 +40,13 @@
         			</StackPanel>
         		</Border>
         		<Border Background="{StaticResource LightBackground}" BorderBrush="{StaticResource LightBackgroundBorder}" BorderThickness="0,1">
-        			<StackPanel Orientation="Horizontal" Height="20" Width="315">
-        				<TextBlock TextWrapping="Wrap" Text="Rating" Width="87" Style="{StaticResource ItemTextStyle}" Foreground="{StaticResource BGGTextGrey}" FontSize="12" >
+        			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+        				<TextBlock TextWrapping="Wrap" Text="Rating" Style="{StaticResource ItemTextStyle}" Foreground="{StaticResource BGGTextGrey}" FontSize="12" HorizontalAlignment="Left" >
         					<TextBlock.RenderTransform>
         						<CompositeTransform/>
         					</TextBlock.RenderTransform>
         				</TextBlock>
-        				<TextBlock TextWrapping="Wrap" Text="{Binding RatingDisplay, Mode=OneWay}" Style="{StaticResource ItemTextStyle}" Foreground="#DE000000" FontSize="12">
+        				<TextBlock TextWrapping="Wrap" Text="{Binding RatingDisplay, Mode=OneWay}" Style="{StaticResource ItemTextStyle}" Foreground="#DE000000" FontSize="12" HorizontalAlignment="Left" Margin="10,0,0,0">
         					<TextBlock.RenderTransform>
         						<CompositeTransform/>
         					</TextBlock.RenderTransform>
@@ -92,6 +92,8 @@
                         />
 						<Button Style="{StaticResource LogPlayAppBarButtonStyle}" Command="{Binding ShowPlayCommand, Mode=OneWay}" IsEnabled="{Binding CanChangeStatus, Mode=OneWay}" 
                         />
+						<Button Style="{StaticResource CommentAppBarButtonStyle}" Command="{Binding LoadAllCommentsCommand, Mode=OneWay}" IsEnabled="{Binding CanChangeStatus, Mode=OneWay}" 
+                        />
 					</StackPanel>
 				</StackPanel>
 				<StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal"/>
@@ -134,6 +136,43 @@
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
+            <VisualStateGroup x:Name="VisualStateGroup">
+            	<VisualStateGroup.Transitions>
+            		<VisualTransition GeneratedDuration="0"/>
+            	</VisualStateGroup.Transitions>
+            	<VisualState x:Name="Comment">
+            		<Storyboard>
+            			<ColorAnimation Duration="0" To="Black" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="txtComments" d:IsOptimized="True"/>
+            			<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="lstComments">
+            				<DiscreteObjectKeyFrame KeyTime="0">
+            					<DiscreteObjectKeyFrame.Value>
+            						<Visibility>Visible</Visibility>
+            					</DiscreteObjectKeyFrame.Value>
+            				</DiscreteObjectKeyFrame>
+            			</ObjectAnimationUsingKeyFrames>
+            			<ColorAnimation Duration="0" To="#FF878787" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="txtDescription" d:IsOptimized="True"/>
+            			<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBlock2">
+            				<DiscreteObjectKeyFrame KeyTime="0">
+            					<DiscreteObjectKeyFrame.Value>
+            						<Visibility>Collapsed</Visibility>
+            					</DiscreteObjectKeyFrame.Value>
+            				</DiscreteObjectKeyFrame>
+            			</ObjectAnimationUsingKeyFrames>
+            		</Storyboard>
+            	</VisualState>
+            	<VisualState x:Name="Description">
+            		<Storyboard>
+            			<ColorAnimation Duration="0" To="#FF878787" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="txtComments" d:IsOptimized="True"/>
+            			<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="lstComments">
+            				<DiscreteObjectKeyFrame KeyTime="0">
+            					<DiscreteObjectKeyFrame.Value>
+            						<Visibility>Collapsed</Visibility>
+            					</DiscreteObjectKeyFrame.Value>
+            				</DiscreteObjectKeyFrame>
+            			</ObjectAnimationUsingKeyFrames>
+            		</Storyboard>
+            	</VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
         <!-- Back button and page title -->
@@ -158,7 +197,7 @@
         	</StackPanel>
         </Grid>
 
-        <ProgressRing HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Height="32" RenderTransformOrigin="1.625,0.312" Width="32" DataContext="{Binding Source={StaticResource Locator}}" IsActive="{Binding BoardGame.IsLoading}" Foreground="White" Grid.Row="0"/>
+        <ProgressRing HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="24" RenderTransformOrigin="1.625,0.312" Width="24" DataContext="{Binding Source={StaticResource Locator}}" IsActive="{Binding BoardGame.IsLoading}" Foreground="White" Grid.Row="0"/>
         <ScrollViewer x:Name="Body" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" Margin="0" Grid.Row="1" HorizontalScrollBarVisibility="Auto">
         	<StackPanel Orientation="Horizontal" Margin="0,0,0,40">
         		<StackPanel x:Name="RatingImage" Orientation="Vertical" Margin="120,40,0,0">
@@ -283,16 +322,26 @@
         				<TextBlock TextWrapping="Wrap" Text="{Binding UserComment, ConverterParameter=“\{0\}”, Converter={StaticResource StringFormatConverter}}" FontSize="14.667" FontFamily="Segoe UI" FontStyle="Italic" Margin="0,20,0,0"/>
         			</StackPanel>
         		</ScrollViewer>
-        		<ScrollViewer x:Name="scrollDescription" HorizontalAlignment="Left" Width="300" BorderThickness="0" Padding="0,0,0,10" VerticalScrollBarVisibility="Auto" Margin="40,40,0,0">
-        			<StackPanel Margin="0" Width="280" HorizontalAlignment="Left">
-        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="26.667" Style="{StaticResource BodyTextStyle}" Text="description" Foreground="Black"/>
-        				<TextBlock TextWrapping="Wrap" Text="{Binding Description}" Style="{StaticResource BasicTextStyle}" Margin="0,30,0,0" FontSize="12" Foreground="#DE000000"/>
+        		<ScrollViewer x:Name="scrollDescription" BorderThickness="0" Padding="0,0,0,10" VerticalScrollBarVisibility="Auto" Margin="40,40,40,0" HorizontalAlignment="Left" Width="700">
+        			<StackPanel Margin="0">
+        				<StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+        					<TextBlock x:Name="txtDescription" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="26.667" Style="{StaticResource BodyTextStyle}" Text="description" Foreground="Black" Margin="0"/>
+        					<TextBlock x:Name="txtComments" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="26.667" Style="{StaticResource BodyTextStyle}" Text="comments" Foreground="#FF878787" Margin="20,0,0,0"/>
+        				</StackPanel>
+        				<TextBlock x:Name="textBlock2" TextWrapping="Wrap" Text="{Binding Description}" Style="{StaticResource BasicTextStyle}" Margin="0,30,20,0" FontSize="12" Foreground="#DE000000"/>
+        				<ListView x:Name="lstComments" ItemsSource="{Binding Comments}" ItemTemplate="{StaticResource CommentTemplate}" SelectionMode="None" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed" >
+						<ListView.ItemsPanel>
+    <ItemsPanelTemplate>
+        <VirtualizingStackPanel >
+		<VirtualizingStackPanel.ChildrenTransitions>
+                <TransitionCollection/>
+            </VirtualizingStackPanel.ChildrenTransitions>
+		</VirtualizingStackPanel>
+		</ItemsPanelTemplate>
+		</ListView.ItemsPanel>
+						</ListView>
         			</StackPanel>
         		</ScrollViewer>
-        		<Grid x:Name="Comments" Margin="20,40,0,0" Width="280">
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="26.667" Style="{StaticResource BodyTextStyle}" Text="comments" Foreground="Black" Margin="0"/>
-        			<ListView ItemsSource="{Binding Comments}" ItemTemplate="{StaticResource CommentTemplate}" SelectionMode="None" HorizontalAlignment="Left" Margin="0,50,0,0"/>
-        		</Grid>
         	</StackPanel>
         </ScrollViewer>
         <Popup Width="400" DataContext="{Binding BoardGame, Mode=OneWay, Source={StaticResource Locator}}" IsOpen="{Binding ShowPlayDialog}" Margin="40,0,0,88" Grid.RowSpan="1" Grid.Row="1" Height="400" HorizontalAlignment="Left" VerticalAlignment="Bottom">

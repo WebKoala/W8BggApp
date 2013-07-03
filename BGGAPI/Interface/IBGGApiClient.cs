@@ -21,5 +21,7 @@ namespace BGGAPI.Interface
         Task<BGGUser> LoadUserDetails(string username);
 
         Task<bool> LogPlay(string username, string password, int gameId, DateTime date, int amount, string comments, int length);
+
+        Task<IEnumerable<Comment>> LoadAllComments(int GameId, int totalComments);
     }
 }

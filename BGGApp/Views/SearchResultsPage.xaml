@@ -26,30 +26,38 @@
         </Grid.RowDefinitions>
 
         <!-- Back button, page title and subtitles-->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
-            <TextBlock x:Name="resultText" Grid.Column="2" Text="Results for&#x00a0;" IsHitTestVisible="false" Style="{StaticResource PageSubheaderTextStyle}" Grid.ColumnSpan="2" Margin="25,0,701,40">
+		<Grid x:Name="Header" Background="{StaticResource BGGHeaderBlue}" Margin="0" Height="100" VerticalAlignment="Top">
+    		<Grid.ColumnDefinitions>
+    			<ColumnDefinition Width="Auto"/>
+    			<ColumnDefinition Width="*"/>
+    		</Grid.ColumnDefinitions>
+        	
+    		<Button x:Name="backButton1" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}" Margin="36,0,0,-4" VerticalAlignment="Center">
+    			<Button.Foreground>
+    				<SolidColorBrush Color="{StaticResource BGGPurple}"/>
+    			</Button.Foreground>
+    		</Button>
+        	
+    		
+    		<Grid x:Name="UserInfo1" HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Top" Width="Auto" Margin="0,18,18,18" DataContext="{Binding Settings.CurrentUser, Mode=OneWay, Source={StaticResource Locator}}" Grid.Column="1">
+    			<TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource PageSubheaderTextStyle}" FontSize="18.667" Margin="0,-15,72,0" Foreground="White" Text="{Binding Username}"/>
+    			<Image Height="64" Width="64" Source="{Binding Avatar}" HorizontalAlignment="Right"/>
+    		</Grid>
+			 <TextBlock x:Name="resultText" Grid.Column="2" Text="Results for&#x00a0;" IsHitTestVisible="false" Style="{StaticResource PageSubheaderTextStyle}" Grid.ColumnSpan="2" Margin="25,0,701,40">
             	<TextBlock.Foreground>
-            		<SolidColorBrush Color="{StaticResource BGGPurple}"/>
+            		<SolidColorBrush Color="White"/>
             	</TextBlock.Foreground>
             </TextBlock>
             <TextBlock x:Name="queryText" Grid.Column="3" IsHitTestVisible="false" Style="{StaticResource PageSubheaderTextStyle}" Margin="160,0,10,40" Text="{Binding SearchTermDisplay, Mode=OneWay}">
             	<TextBlock.Foreground>
-            		<SolidColorBrush Color="{StaticResource BGGPurple}"/>
+            		<SolidColorBrush Color="White"/>
             	</TextBlock.Foreground>
             </TextBlock>
-            <TextBlock x:Name="pageTitle_Copy" Grid.Column="1" Style="{StaticResource PageHeaderTextStyle}" Text="BGG Companion" HorizontalAlignment="Left" Margin="0,0,0,40">
-            	<TextBlock.Foreground>
-            		<SolidColorBrush Color="{StaticResource BGGPurple}"/>
-            	</TextBlock.Foreground>
-            </TextBlock>
-        </Grid>
+    	</Grid>
+        
+           
+           
+       
 		 <ListView Margin="42,84,42,42" Grid.Row="1" ItemTemplate="{StaticResource HubCollectionDataItem}" ItemsSource="{Binding FoundResults}"
 		ItemClick="ItemView_ItemClick" SelectionMode="None" IsItemClickEnabled="True" IsSwipeEnabled="False">
 		<ListView.ItemsPanel>

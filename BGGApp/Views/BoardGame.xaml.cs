@@ -26,6 +26,24 @@ namespace BGGApp.Views
         public BoardGame()
         {
             this.InitializeComponent();
+            txtComments.PointerReleased += txtComments_PointerReleased;
+            txtDescription.PointerReleased += txtDescription_PointerReleased;
+            var transitions = lstComments.ItemContainerTransitions;
+            
+            foreach (var trans in transitions)
+                {
+                    transitions.Remove(trans);
+                }
+        }
+
+        void txtDescription_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, "Description", true);
+        }
+
+        void txtComments_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, "Comment", true);
         }
 
         /// <summary>

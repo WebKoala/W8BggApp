@@ -91,7 +91,7 @@
     			<TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource PageSubheaderTextStyle}" FontSize="18.667" Margin="0,-15,72,0" Foreground="White" Text="{Binding Username}"/>
     			<Image Height="64" Width="64" Source="{Binding Avatar}" HorizontalAlignment="Right"/>
     		</Grid>
-    		<Controls:BindableTextBox TextWrapping="Wrap" Width="300" BorderThickness="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="600,0,0,0" BindableText="{Binding CurrentTextFilter.FilterText, Mode=TwoWay}" Grid.Column="1"/>
+    		<Controls:BindableTextBox TextWrapping="Wrap" BorderThickness="1" VerticalAlignment="Center" Margin="0,34,382,34" BindableText="{Binding CurrentTextFilter.FilterText, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Right" Width="300"/>
     	</Grid>
     	<ListView ItemTemplate="{StaticResource HubCollectionDataItem}" ItemsSource="{Binding FilteredCollection}" Grid.Row="1"
     		ItemClick="ItemView_ItemClick" SelectionMode="None" IsItemClickEnabled="True" IsSwipeEnabled="False" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="40,100,40,0" Style="{StaticResource HorizontalScrollerListView}"   >

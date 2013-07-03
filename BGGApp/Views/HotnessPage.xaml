@@ -84,7 +84,7 @@
     			</Button.Foreground>
     		</Button>
         	
-    		<TextBlock x:Name="pageTitle2" Style="{StaticResource PageHeaderTextStyle}" Foreground="White" HorizontalAlignment="Left" Grid.Column="1" Text="hotness" Margin="120,24,0,36" VerticalAlignment="Center" FontSize="26.667"/>
+    		<TextBlock x:Name="pageTitle2" Style="{StaticResource PageHeaderTextStyle}" Foreground="White" HorizontalAlignment="Left" Grid.Column="1" Text="hot games" Margin="120,24,0,36" VerticalAlignment="Center" FontSize="26.667"/>
     		<Grid x:Name="UserInfo1" HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Top" Width="Auto" Margin="0,18,18,18" DataContext="{Binding Settings.CurrentUser, Mode=OneWay, Source={StaticResource Locator}}" Grid.Column="1">
     			<TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource PageSubheaderTextStyle}" FontSize="18.667" Margin="0,-15,72,0" Foreground="White" Text="{Binding Username}"/>
     			<Image Height="64" Width="64" Source="{Binding Avatar}" HorizontalAlignment="Right"/>

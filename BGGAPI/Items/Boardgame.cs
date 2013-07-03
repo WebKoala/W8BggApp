@@ -46,6 +46,8 @@ namespace BGGAPI.Items
         public List<string> Publishers { get; set; }
         public List<string> Artists { get; set; }
 
+        public int TotalComments { get; set; }
+
         public List<Comment> Comments { get; set; }
         public List<PlayerPollResult> PlayerPollResults { get; set; }
 

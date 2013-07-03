@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="23486Crescentius.BGGCompanion" Publisher="CN=752E0EB7-CB0A-4F45-8E45-8408C30E5219" Version="1.0.0.12" />
+  <Identity Name="23486Crescentius.BGGCompanion" Publisher="CN=752E0EB7-CB0A-4F45-8E45-8408C30E5219" Version="1.0.0.13" />
   <Properties>
     <DisplayName>BGG Companion</DisplayName>
     <PublisherDisplayName>Crescentius</PublisherDisplayName>

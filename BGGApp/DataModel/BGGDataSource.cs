@@ -68,6 +68,22 @@ namespace BGGApp.DataModel
             LoadUserInfo();
         }
 
+        public async Task LoadAllComments(BoardGameDataItem item)
+        {
+            IEnumerable<Comment> comments = await Client.LoadAllComments(item.GameId,item.TotalComments);
+            item.Comments.Clear();
+            foreach (Comment comment in comments.OrderByDescending(x => x.Text.Length).Take(500))
+            {
+                item.Comments.Add(new CommentDataItem()
+                {
+                    Rating = comment.Rating,
+                    Text = comment.Text,
+                    Username = comment.Username
+                });
+            }
+
+        }
+        
         private void LoadCollectionFromCache()
         {
 
@@ -252,7 +268,10 @@ namespace BGGApp.DataModel
                     break;
 
                 BoardGameDataItem game = await LoadGame(srdi.GameId);
-                srdi.Thumbnail = game.Thumbnail;
+                if (game != null)
+                {
+                    srdi.Thumbnail = game.Thumbnail;
+                }
             }
 
             cts = null;
@@ -375,8 +394,8 @@ namespace BGGApp.DataModel
                     bgdi.BGGRating = game.BGGRating;
                     bgdi.FetchDate = DateTime.Now;
                     bgdi.IsExpansion = game.IsExpansion;
+                    bgdi.TotalComments = game.TotalComments;
                     bgdi.IsFullyLoaded = true;
-                    
 
                     foreach (string publisher in game.Publishers)
                         bgdi.Publishers.Add(publisher);

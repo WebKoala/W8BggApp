@@ -21,6 +21,8 @@ namespace BGGApp.ViewModel
             this.LogPlayCommand = new RelayCommand(LogPlay);
             this.ShowPlayCommand = new RelayCommand(ShowPlay);
             this.HidePlayCommand = new RelayCommand(HidePlay);
+            this.LoadAllCommentsCommand = new RelayCommand(LoadAllComments);
+
             ResetCurrentPlay();
 
             Messenger.Default.Register<UsernameChangedMessage>(this, UsernameChanged);
@@ -71,6 +73,17 @@ namespace BGGApp.ViewModel
         {
             ResetCurrentPlay();
             ShowPlayDialog = false;
+        }
+
+        public RelayCommand LoadAllCommentsCommand { get; private set; }
+        private async void LoadAllComments()
+        {
+            if (CurrentGame != null)
+            {
+                IsLoading = true;
+                await BGGDataSource.Singleton.LoadAllComments(CurrentGame);
+                IsLoading = false;
+            }
         }
 
         public RelayCommand LogPlayCommand { get; private set; }
